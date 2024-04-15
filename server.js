@@ -55,7 +55,7 @@ let taskId = 1;
  *           description: The task description.
  *         status:
  *           type: string
- *           description: The status of the task.
+ *           description: The status of the task (backlog, inProgress, done, onAccess).
  *       example:
  *         id: 1
  *         username: "johndoe"
