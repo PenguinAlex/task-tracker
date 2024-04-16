@@ -110,15 +110,14 @@ let taskId = 1;
  *       400:
  *         description: Username is already taken
  */
-app.post('/register', async (req, res) => {
+app.post('/register', (req, res) => {
     const { username, password } = req.body;
-    const hashedPassword = await bcrypt.hash(password, 8);
 
     if (users.find(user => user.username === username)) {
         return res.status(400).send('User already exists');
     }
 
-    const newUser = { username, password: hashedPassword };
+    const newUser = { username, password };
     users.push(newUser);
     res.status(201).send('User registered');
 });
@@ -141,11 +140,11 @@ app.post('/register', async (req, res) => {
  *       400:
  *         description: Invalid credentials
  */
-app.post('/login', async (req, res) => {
+app.post('/login', (req, res) => {
     const { username, password } = req.body;
-    const user = users.find(user => user.username === username);
+    const user = users.find(user => user.username === username && user.password === password);
 
-    if (!user || !(await bcrypt.compare(password, user.password))) {
+    if (!user) {
         return res.status(400).send('Invalid credentials');
     }
 
@@ -167,11 +166,14 @@ app.post('/login', async (req, res) => {
  *             required:
  *               - username
  *               - task
+ *               - status
  *             properties:
  *               username:
  *                 type: string
  *               task:
  *                 type: string
+*                status:
+ *                type: string (backlog, inProgress, done, onAccess)
  *     responses:
  *       201:
  *         description: Task added
@@ -179,13 +181,14 @@ app.post('/login', async (req, res) => {
  *         description: User not found
  */
 app.post('/task', (req, res) => {
-    const { username, task } = req.body;
+    console.log(users)
+    const { username, task, status } = req.body;
 
     if (!users.find(user => user.username === username)) {
         return res.status(400).send('User not found');
     }
 
-    const newTask = { id: taskId++, username, task, status: 'backlog' };
+    const newTask = { id: taskId++, username, task, status: status };
     tasks.push(newTask);
     res.status(201).send('Task added');
 });
