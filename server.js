@@ -173,8 +173,8 @@ app.post('/login', (req, res) => {
  *                 type: string
  *               task:
  *                 type: string
-*                status:
- *                type: string (backlog, inProgress, done, onAccess)
+ *               status:
+ *                 type: string
  *     responses:
  *       201:
  *         description: Task added
