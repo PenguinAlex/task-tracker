@@ -189,7 +189,7 @@ app.post('/task', (req, res) => {
         return res.status(400).send('User not found');
     }
 
-    const newTask = { id: taskId++, username, task, status: status };
+    const newTask = { id: taskId++, username, task, status: status ?? 'backlog' };
     tasks.push(newTask);
     res.status(201).send('Task added');
 });
