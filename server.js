@@ -119,6 +119,7 @@ app.post('/register', (req, res) => {
 
     const newUser = { username, password };
     users.push(newUser);
+    console.log(users)
     res.status(201).send('User registered');
 });
 
